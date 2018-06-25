@@ -2,7 +2,6 @@ package de.tum.`in`.tumcampusapp.component.ui.overview.card
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.PopupMenu
@@ -10,10 +9,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
-import com.google.firebase.analytics.FirebaseAnalytics
 import de.tum.`in`.tumcampusapp.R
 import de.tum.`in`.tumcampusapp.component.other.settings.UserPreferencesActivity
 import de.tum.`in`.tumcampusapp.utils.Const
+import de.tum.`in`.tumcampusapp.utils.FirebaseLogging
 
 open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener, View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
@@ -28,11 +27,11 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     override fun onClick(v: View) {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(v.context)
-        val bundle = Bundle().apply {
-            putString("card_type", currentCard?.cardType.toString())
-        }
-        firebaseAnalytics.logEvent("select_card", bundle)
+        FirebaseLogging
+                .get(v.context)
+                .setEvent("select_card")
+                .addParameter("card_type", currentCard?.cardType.toString())
+                .log()
 
         val intent = currentCard?.getIntent() ?: return
         val transitionName = activity.getString(R.string.transition_card)
@@ -60,11 +59,11 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     private fun handleOpenCardSettings(): Boolean {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
-        val bundle = Bundle().apply {
-            putString("card_type", currentCard?.cardType.toString())
-        }
-        firebaseAnalytics.logEvent("card_menu_open_card_settings", bundle)
+        FirebaseLogging
+                .get(itemView.context)
+                .setEvent("card_menu_open_card_settings")
+                .addParameter("card_type", currentCard?.cardType.toString())
+                .log()
 
         val key = currentCard?.settingsPrefix ?: return true
 
@@ -76,11 +75,11 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     private fun handleAlwaysHideCard(): Boolean {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
-        val bundle = Bundle().apply {
-            putString("card_type", currentCard?.cardType.toString())
-        }
-        firebaseAnalytics.logEvent("card_menu_always_hide_card", bundle)
+        FirebaseLogging
+                .get(itemView.context)
+                .setEvent("card_menu_always_hide_card")
+                .addParameter("card_type", currentCard?.cardType.toString())
+                .log()
 
         currentCard?.hideAlways()
         currentCard?.discardCard()
