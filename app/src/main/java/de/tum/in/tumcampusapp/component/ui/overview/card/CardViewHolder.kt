@@ -2,6 +2,7 @@ package de.tum.`in`.tumcampusapp.component.ui.overview.card
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.PopupMenu
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import com.google.firebase.analytics.FirebaseAnalytics
 import de.tum.`in`.tumcampusapp.R
 import de.tum.`in`.tumcampusapp.component.other.settings.UserPreferencesActivity
 import de.tum.`in`.tumcampusapp.utils.Const
@@ -26,6 +28,12 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     override fun onClick(v: View) {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(v.context)
+        val bundle = Bundle().apply {
+            putString("card_type", currentCard?.cardType.toString())
+        }
+        firebaseAnalytics.logEvent("select_card", bundle)
+
         val intent = currentCard?.getIntent() ?: return
         val transitionName = activity.getString(R.string.transition_card)
 
@@ -44,6 +52,12 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
+        val bundle = Bundle().apply {
+            putString("card_type", currentCard?.cardType.toString())
+        }
+        firebaseAnalytics.logEvent("card_menu_item_click", bundle)
+
         return when (item.itemId) {
             R.id.open_card_setting -> handleOpenCardSettings()
             R.id.always_hide_card -> handleAlwaysHideCard()
