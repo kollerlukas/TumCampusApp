@@ -26,7 +26,7 @@ class FirebaseLogging(context: Context) {
 
     companion object {
 
-        fun get(context: Context): FirebaseLogging {
+        @JvmStatic fun get(context: Context): FirebaseLogging {
             return FirebaseLogging(context)
         }
 

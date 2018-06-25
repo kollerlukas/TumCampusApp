@@ -18,6 +18,7 @@ import java.util.Locale;
 import de.tum.in.tumcampusapp.R;
 import de.tum.in.tumcampusapp.component.tumui.calendar.CalendarActivity;
 import de.tum.in.tumcampusapp.component.tumui.roomfinder.RoomFinderActivity;
+import de.tum.in.tumcampusapp.utils.FirebaseLogging;
 
 public class TimetableWidget extends AppWidgetProvider {
 
@@ -47,6 +48,12 @@ public class TimetableWidget extends AppWidgetProvider {
      * @param appWidgetIds the array of widget ids to update
      */
     static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        FirebaseLogging
+                .get(context)
+                .setEvent("widget_active")
+                .addParameter("widget_type", "timetable")
+                .log();
+
         for (int widgetId : appWidgetIds) {
             TimetableWidget.updateAppWidget(context, appWidgetManager, widgetId);
         }

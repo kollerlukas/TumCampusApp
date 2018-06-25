@@ -18,6 +18,7 @@ import java.util.TimerTask;
 import de.tum.in.tumcampusapp.R;
 import de.tum.in.tumcampusapp.component.ui.transportation.TransportController;
 import de.tum.in.tumcampusapp.component.ui.transportation.model.efa.WidgetDepartures;
+import de.tum.in.tumcampusapp.utils.FirebaseLogging;
 
 /**
  * Implementation of App Widget functionality.
@@ -42,6 +43,13 @@ public class MVVWidget extends AppWidgetProvider {
         }
         updateAppWidgets(context, appWidgetManager, appWidgetIds);
         setAlarm(context);
+
+        FirebaseLogging
+                .get(context)
+                .setEvent("widget_active")
+                .addParameter("widget_type", "mvv")
+                .log();
+
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 

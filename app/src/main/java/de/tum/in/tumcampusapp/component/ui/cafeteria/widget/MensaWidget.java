@@ -19,6 +19,7 @@ import de.tum.in.tumcampusapp.database.TcaDb;
 import de.tum.in.tumcampusapp.service.MensaWidgetService;
 import de.tum.in.tumcampusapp.utils.Const;
 import de.tum.in.tumcampusapp.utils.DateUtils;
+import de.tum.in.tumcampusapp.utils.FirebaseLogging;
 import io.reactivex.Flowable;
 
 /**
@@ -31,6 +32,11 @@ public class MensaWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        FirebaseLogging
+                .get(context)
+                .setEvent("widget_active")
+                .addParameter("widget_type", "mensa")
+                .log();
 
         // There may be multiple widgets active, so update all of them
         this.appWidgetManager = appWidgetManager;
