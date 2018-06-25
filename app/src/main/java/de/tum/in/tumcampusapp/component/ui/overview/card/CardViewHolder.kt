@@ -52,12 +52,6 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
-        val bundle = Bundle().apply {
-            putString("card_type", currentCard?.cardType.toString())
-        }
-        firebaseAnalytics.logEvent("card_menu_item_click", bundle)
-
         return when (item.itemId) {
             R.id.open_card_setting -> handleOpenCardSettings()
             R.id.always_hide_card -> handleAlwaysHideCard()
@@ -66,6 +60,12 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     private fun handleOpenCardSettings(): Boolean {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
+        val bundle = Bundle().apply {
+            putString("card_type", currentCard?.cardType.toString())
+        }
+        firebaseAnalytics.logEvent("card_menu_open_card_settings", bundle)
+
         val key = currentCard?.settingsPrefix ?: return true
 
         val intent = Intent(itemView.context, UserPreferencesActivity::class.java).apply {
@@ -76,6 +76,12 @@ open class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
     }
 
     private fun handleAlwaysHideCard(): Boolean {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(itemView.context)
+        val bundle = Bundle().apply {
+            putString("card_type", currentCard?.cardType.toString())
+        }
+        firebaseAnalytics.logEvent("card_menu_always_hide_card", bundle)
+
         currentCard?.hideAlways()
         currentCard?.discardCard()
         return true
