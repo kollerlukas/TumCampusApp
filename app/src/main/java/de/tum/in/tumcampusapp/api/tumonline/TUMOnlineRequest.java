@@ -132,7 +132,8 @@ public final class TUMOnlineRequest<T> {
         // set parameter on the TUMOnline request an fetch the results
         String url = this.getRequestURL();
 
-        if (!TUMOnlineConst.Companion.getREQUEST_TOKEN().equals(method)){
+        if (!TUMOnlineConst.Companion.getREQUEST_TOKEN().equals(method)
+                && !method.equals(TUMOnlineConst.Companion.getIDENTITY())){
             //If there were some requests that failed and we verified that the token is not active anymore, block all requests directly
             if (!method.equals(TUMOnlineConst.Companion.getTOKEN_CONFIRMED())
                 && Utils.getSettingBool(mContext, Const.TUMO_DISABLED, false)) {
